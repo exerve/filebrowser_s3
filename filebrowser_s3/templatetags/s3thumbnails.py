@@ -10,7 +10,7 @@ from django.core.files.storage import default_storage
 from django.conf import settings
 from django import template
 
-register = template.Library(
+register = template.Library()
 
 
 # This templatetag is a modified version of:

@@ -13,6 +13,10 @@ from mezzanine import template
 register = template.Library()
 
 
+@register.filter(name="fix_slashes")
+def fix_slashes(value:str):
+    return value.replace("\\","/").lstrip("/")
+
 # This templatetag is a modified version of:
 # https://github.com/stephenmcd/mezzanine/blob/d4daf78986e4ac5cec089ad49bd216557e98f4fc/mezzanine/core/templatetags/mezzanine_tags.py#L273-L438
 @register.simple_tag(name='s3thumbnail')
@@ -33,9 +37,13 @@ def thumbnail(image_url, width, height, upscale=True, quality=95, left=.5,
     except ImportError:
         return ""
 
+    s3urlpath = "/".join(
+        filter(None, [settings.MEDIA_URL.strip("/"), settings.AWS_LOCATION])
+    ) + "/"
+
     image_url = unquote(str(image_url)).split("?")[0]
-    if image_url.startswith(settings.MEDIA_URL):
-        image_url = image_url.replace(settings.MEDIA_URL, "", 1)
+    if image_url.startswith(s3urlpath):
+        image_url = image_url.replace(s3urlpath, "", 1)
     image_dir, image_name = os.path.split(image_url)
     image_prefix, image_ext = os.path.splitext(image_name)
     filetype = {".png": "PNG", ".gif": "GIF"}.get(image_ext.lower(), "JPEG")

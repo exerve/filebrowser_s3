@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name="filebrowser_s3",
-	version="1.0.0",
+	version="1.0.1",
 	description="An S3 fix for Mezzanine's media manager.",
 	author = 'Mozilla Foundation',
 	author_email = 'pomax@mozillafoundation.org',

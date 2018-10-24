@@ -74,14 +74,16 @@ h1 {margin:-30px 0 15px 0;}
     {% if results_var.images_total %}
     <td class="fb_icon">
         {% ifequal file.filetype 'Image' %}
-        <a href="{{ file.url }}" target="_blank"><img src="{% s3thumbnail file.path 60 60 %}" title="{% trans 'View Image' %}" /></a>
+        <a href="{{ file.url }}" target="_blank"><img
+            src="{% s3thumbnail file.url 60 60 %}"
+            title="{% trans 'View Image' %}" /></a>
         {% endifequal %}
     </td>
     {% endif %}
 
     <!-- FILENAME/DIMENSIONS -->
     {% ifequal file.filetype 'Folder' %}
-    <td><b><a href="{% url "fb_browse" %}{% query_string "" "q,dir,p" %}&amp;dir={{ file.path_relative_directory|urlencode }}">{{ file.filename }}</a></b></td>
+    <td><b><a href="{% url "fb_browse" %}{% query_string "" "q,dir,p" %}&amp;dir={{ file.path_relative_directory|fix_slashes|urlencode }}">{{ file.filename }}</a></b></td>
     {% else %}
     <td><b><a href="{{ file.url }}" target="_blank">{{ file.filename }}</a></b></td>
     {% endifequal %}
